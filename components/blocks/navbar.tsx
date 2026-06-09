@@ -1,5 +1,5 @@
 "use client";
-import { MenuIcon, X, BarChart2 } from "lucide-react";
+import { MenuIcon, X } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -33,9 +33,22 @@ export function Navbar() {
     <>
       <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-200 ${scrolled ? "bg-background/95 backdrop-blur border-b border-border shadow-sm" : "bg-transparent"}`}>
         <div className="container h-16 flex items-center justify-between gap-6">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight shrink-0">
-            <BarChart2 className="size-5" />
-            <span>CreditGuard</span>
+          <Link href="/" className="shrink-0">
+            <span
+              aria-label="CreditGuard"
+              role="img"
+              className="block h-8 w-36 bg-foreground"
+              style={{
+                maskImage: "url(/logo.png)",
+                WebkitMaskImage: "url(/logo.png)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "left center",
+                WebkitMaskPosition: "left center",
+              }}
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">

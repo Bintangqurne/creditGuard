@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, BarChart2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -140,10 +140,21 @@ export default function DemoPage() {
             <Button variant="ghost" size="icon" asChild>
               <Link href="/"><ArrowLeft className="size-4" /></Link>
             </Button>
-            <div className="flex items-center gap-2 font-bold">
-              <BarChart2 className="size-4" />
-              <span className="text-sm">CreditGuard</span>
-            </div>
+            <span
+              aria-label="CreditGuard"
+              role="img"
+              className="block h-7 w-32 bg-foreground"
+              style={{
+                maskImage: "url(/logo.png)",
+                WebkitMaskImage: "url(/logo.png)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "left center",
+                WebkitMaskPosition: "left center",
+              }}
+            />
             <span className="text-muted-foreground text-sm hidden sm:block">/ Demo Prediksi</span>
           </div>
           <div className="flex items-center gap-2">
@@ -368,7 +379,7 @@ export default function DemoPage() {
         )}
 
         <p className="mt-8 text-center text-muted-foreground text-xs">
-          Data dummy (Lending Club 2007–2015) · NIM mahasiswa · alat edukasi, bukan keputusan kredit resmi.
+          Dataset Lending Club 2007–2015 · NIM mahasiswa · alat edukasi, bukan keputusan kredit resmi.
         </p>
       </main>
     </div>

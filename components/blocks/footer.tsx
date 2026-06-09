@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import { BarChart2 } from "lucide-react";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -18,10 +17,21 @@ export function Footer() {
       <div className="container">
         <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
           <div className="flex flex-col gap-4 max-w-xs">
-            <div className="flex items-center gap-2 font-bold text-xl">
-              <BarChart2 className="size-5" />
-              <span>CreditGuard</span>
-            </div>
+            <span
+              aria-label="CreditGuard"
+              role="img"
+              className="block h-8 w-36 bg-foreground"
+              style={{
+                maskImage: "url(/logo.png)",
+                WebkitMaskImage: "url(/logo.png)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "left center",
+                WebkitMaskPosition: "left center",
+              }}
+            />
             <p className="text-muted-foreground text-sm">
               Decision-support prediksi risiko gagal bayar berbasis Machine Learning dengan penjelasan SHAP.
             </p>
@@ -60,7 +70,7 @@ export function Footer() {
         </div>
 
         <div className="mt-16 border-t border-border pt-8 flex flex-col md:flex-row md:justify-between gap-4 text-sm text-muted-foreground">
-          <p>Data dummy Lending Club 2007–2015 · Alat edukasi, bukan keputusan kredit resmi.</p>
+          <p>Dataset Lending Club 2007–2015 · Alat edukasi, bukan keputusan kredit resmi.</p>
           <p>CreditGuard</p>
         </div>
 

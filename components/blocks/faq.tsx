@@ -38,14 +38,9 @@ export function Faq() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-12 xl:grid-cols-12 xl:gap-16">
           <ScrollReveal direction="left" className="flex flex-col justify-between lg:col-span-2 xl:col-span-4">
             <div>
-              <div className="mb-8 flex items-start gap-3">
-                <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-xl">CG</span>
-                </div>
-                <div>
-                  <h2 className="font-semibold text-lg">Tim CreditGuard</h2>
-                  <p className="text-sm text-muted-foreground">CreditGuard</p>
-                </div>
+              <div className="mb-8">
+                <h2 className="font-semibold text-lg">Tim CreditGuard</h2>
+                <p className="text-sm text-muted-foreground">CreditGuard</p>
               </div>
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold">Masih ada pertanyaan?</h3>

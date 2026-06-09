@@ -8,9 +8,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const teamMembers = [
-  { id: 1, name: "Ayatullah Bintang Qurne", designation: "Web Developer", photo: "/qurne.png", bg: "from-indigo-500/30 to-purple-500/20", cardHeight: "h-[420px]" },
-  { id: 2, name: "Eldwin Sianto", designation: "ML Engineer", photo: "/eldwin.png", bg: "from-cyan-500/30 to-blue-500/20", cardHeight: "h-[340px]" },
-  { id: 3, name: "Andreas Edward Putra Jatmiko", designation: "ML Engineer", photo: "/andreas.jpeg", bg: "from-emerald-500/30 to-teal-500/20", cardHeight: "h-[480px]" },
+  { id: 1, name: "Ayatullah Bintang Qurne", designation: "Web Developer", photo: "/qurne.png", bg: "from-indigo-500/30 to-purple-500/20", cardHeight: "h-[420px]", objectPosition: "center 20%" },
+  { id: 2, name: "Eldwin Sianto", designation: "ML Engineer", photo: "/eldwin.png", bg: "from-cyan-500/30 to-blue-500/20", cardHeight: "h-[340px]", objectPosition: "center top" },
+  { id: 3, name: "Andreas Edward Putra Jatmiko", designation: "ML Engineer", photo: "/andreas.jpeg", bg: "from-emerald-500/30 to-teal-500/20", cardHeight: "h-[480px]", objectPosition: "center top" },
 ];
 
 export function Team() {
@@ -44,7 +44,7 @@ export function Team() {
                       transition={{ type: "spring", stiffness: 150, damping: 20 }}
                       className={cn(member.cardHeight, "overflow-hidden rounded-xl relative flex items-end")}
                     >
-                      <Image src={member.photo} alt={member.name} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover object-top" />
+                      <Image src={member.photo} alt={member.name} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover" style={{ objectPosition: member.objectPosition }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                       <div className="relative z-10 p-6">
                         <p className="text-white text-lg font-medium tracking-tight">{member.name}</p>
@@ -75,7 +75,7 @@ export function Team() {
                   transition={{ type: "spring", stiffness: 150, damping: 20, delay: idx * 0.05 }}
                   className={cn(member.cardHeight, "overflow-hidden rounded-xl relative flex items-end")}
                 >
-                  <Image src={member.photo} alt={member.name} fill sizes="33vw" className="object-cover object-top" />
+                  <Image src={member.photo} alt={member.name} fill sizes="33vw" className="object-cover" style={{ objectPosition: member.objectPosition }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                   <div className="relative z-10 p-6">
                     <p className="text-white font-medium tracking-tight lg:text-xl">{member.name}</p>
