@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,15 +89,34 @@ export default function DemoPage() {
   const [pred, setPred] = useState<Prediction | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [warming, setWarming] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${API}/meta`)
-      .then((r) => r.json())
-      .then((m: Meta) => {
+    let attempt = 0;
+    const maxAttempts = 8;
+
+    async function fetchMeta() {
+      try {
+        const r = await fetch(`${API}/meta`);
+        const m: Meta = await r.json();
         setMeta(m);
+        setWarming(false);
+        setError(null);
         if (m.categorical?.purpose?.length) setPurpose(m.categorical.purpose[0]);
-      })
-      .catch(() => setError("Gagal konek ke API. Pastikan FastAPI jalan di " + API));
+      } catch {
+        attempt++;
+        if (attempt === 1) setWarming(true);
+        if (attempt < maxAttempts) {
+          setTimeout(fetchMeta, 5000);
+        } else {
+          setWarming(false);
+          setError("API tidak merespons setelah beberapa percobaan. Coba muat ulang halaman.");
+        }
+      }
+    }
+
+    fetchMeta();
   }, []);
 
   async function doLookup(value: string) {
@@ -124,6 +143,7 @@ export default function DemoPage() {
       });
       if (!r.ok) { const e = await r.json().catch(() => ({})); setError(e.detail || "Gagal prediksi"); return; }
       setPred(await r.json());
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch { setError("Gagal konek ke API"); }
     finally { setLoading(false); }
   }
@@ -173,6 +193,13 @@ export default function DemoPage() {
           <h1 className="text-2xl font-bold">Prediksi Risiko Gagal Bayar</h1>
           <p className="text-muted-foreground text-sm mt-1">Decision-support · human-in-the-loop · powered by LightGBM + SHAP</p>
         </div>
+
+        {warming && (
+          <div className="mb-6 rounded-lg bg-primary/10 border border-primary/30 text-primary px-4 py-3 text-sm flex items-center gap-2">
+            <span className="inline-block h-2 w-2 rounded-full bg-primary animate-pulse shrink-0" />
+            API sedang starting up, harap tunggu sebentar (~30 detik)...
+          </div>
+        )}
 
         {error && (
           <div className="mb-6 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 text-sm">
@@ -314,7 +341,7 @@ export default function DemoPage() {
 
         {/* ── HASIL ── */}
         {pred && (
-          <Card className="mt-6">
+          <Card className="mt-6" ref={resultRef}>
             <CardHeader>
               <CardTitle className="text-base">3 · Hasil Prediksi</CardTitle>
             </CardHeader>

@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { label: "Fitur", href: "#features" },
   { label: "Cara Kerja", href: "#timeline" },
   { label: "Tim", href: "#team" },
+  { label: "Tools", href: "#stack" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontak", href: "#contact" },
 ];

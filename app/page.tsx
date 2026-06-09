@@ -4,6 +4,7 @@ import { Stats } from "@/components/blocks/stats";
 import { Features } from "@/components/blocks/features";
 import { Timeline } from "@/components/blocks/timeline";
 import { Team } from "@/components/blocks/team";
+import { Skills } from "@/components/blocks/skills";
 import { Faq } from "@/components/blocks/faq";
 import { Contact } from "@/components/blocks/contact";
 import { Footer } from "@/components/blocks/footer";
@@ -18,6 +19,7 @@ export default function Home() {
         <Features />
         <Timeline />
         <Team />
+        <Skills />
         <Faq />
         <Contact />
       </main>

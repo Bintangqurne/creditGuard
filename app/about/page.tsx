@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, BarChart2, Brain, Database, GitBranch, ShieldCheck, Target, Users } from "lucide-react";
+import { ArrowLeft, Brain, Database, GitBranch, ShieldCheck, Target, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -22,17 +22,28 @@ export default function AboutPage() {
             <Button variant="ghost" size="icon" asChild>
               <Link href="/"><ArrowLeft className="size-4" /></Link>
             </Button>
-            <div className="flex items-center gap-2 font-bold">
-              <BarChart2 className="size-4" />
-              <span className="text-sm">CreditGuard</span>
-            </div>
+            <span
+              aria-label="CreditGuard"
+              role="img"
+              className="block h-7 w-32 bg-foreground"
+              style={{
+                maskImage: "url(/logo.png)",
+                WebkitMaskImage: "url(/logo.png)",
+                maskSize: "contain",
+                WebkitMaskSize: "contain",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "left center",
+                WebkitMaskPosition: "left center",
+              }}
+            />
             <span className="text-muted-foreground text-sm hidden sm:block">/ Tentang</span>
           </div>
           <ThemeToggle />
         </div>
       </header>
 
-      <main className="mx-auto px-6 py-16 max-w-4xl">
+      <main className="container py-16">
         <div className="mb-12">
           <p className="text-muted-foreground text-sm uppercase tracking-widest mb-3">Tentang Proyek</p>
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl mb-4">
@@ -84,7 +95,7 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap mt-8">
           <Button asChild>
             <Link href="/demo">Coba Demo</Link>
           </Button>

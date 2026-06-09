@@ -32,58 +32,60 @@
 }
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
+  /* Light — deep_twilight text, bright_teal_blue primary, frosted_blue/light_cyan accents */
+  --background: 190 60% 98%;          /* near-white with cyan tint */
+  --foreground: 239 94% 19%;          /* deep_twilight #03045e */
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 3.9%;
+  --card-foreground: 239 94% 19%;
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 3.9%;
-  --primary: 240 5.9% 10%;
+  --popover-foreground: 239 94% 19%;
+  --primary: 201 100% 36%;            /* bright_teal_blue #0077b6 */
   --primary-foreground: 0 0% 98%;
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
+  --secondary: 190 75% 90%;           /* frosted_blue light */
+  --secondary-foreground: 239 94% 22%;
+  --muted: 190 60% 93%;
+  --muted-foreground: 201 100% 26%;   /* bright_teal_blue-300 area */
+  --accent: 190 75% 88%;              /* frosted_blue #90e0ef */
+  --accent-foreground: 239 94% 22%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 240 10% 3.9%;
-  --chart-1: 12 76% 61%;
-  --chart-2: 173 58% 39%;
-  --chart-3: 197 37% 24%;
+  --border: 190 55% 84%;
+  --input: 190 55% 84%;
+  --ring: 201 100% 36%;
+  --chart-1: 201 100% 36%;
+  --chart-2: 190 100% 42%;
+  --chart-3: 239 94% 40%;
   --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
+  --chart-5: 190 75% 55%;
   --radius: 0.5rem;
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
+  /* Dark — deep_twilight bg, turquoise_surf primary, light_cyan text */
+  --background: 238 95% 6%;           /* deep_twilight near-black */
+  --foreground: 190 77% 88%;          /* light_cyan #caf0f8 */
+  --card: 238 95% 9%;
+  --card-foreground: 190 77% 88%;
+  --popover: 238 95% 6%;
+  --popover-foreground: 190 77% 88%;
+  --primary: 190 100% 42%;            /* turquoise_surf #00b4d8 */
+  --primary-foreground: 238 95% 8%;
+  --secondary: 238 95% 14%;
+  --secondary-foreground: 190 75% 75%;
+  --muted: 238 90% 12%;
+  --muted-foreground: 201 100% 72%;   /* bright_teal_blue-800 #7cd1ff */
+  --accent: 238 95% 15%;
+  --accent-foreground: 190 75% 75%;
+  --destructive: 0 62.8% 45%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+  --border: 238 75% 20%;
+  --input: 238 75% 20%;
+  --ring: 190 100% 42%;
+  --chart-1: 190 100% 42%;
+  --chart-2: 201 100% 60%;
+  --chart-3: 190 75% 75%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 239 80% 60%;
 }
 
 /* Reset masuk @layer base agar tidak override @layer utilities (py-*, px-*, m-* dll) */
