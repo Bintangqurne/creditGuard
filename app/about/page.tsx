@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const highlights = [
   { icon: <Database className="size-5" />, title: "826k baris data", desc: "Dataset Lending Club 2007–2015 dengan 18.4% default rate" },
-  { icon: <Brain className="size-5" />, title: "7 model diuji", desc: "LogReg, KNN, RF, XGB, CatBoost, LightGBM, SVM + Optuna tuning" },
+  { icon: <Brain className="size-5" />, title: "7 model diuji", desc: "LogReg, KNN, RF, XGB, CatBoost, LightGBM, Ensemble + Optuna tuning" },
   { icon: <Target className="size-5" />, title: "Dual threshold", desc: "THR_RECALL (F2-optimal) + THR_F1 (balanced), tuning OOF leak-free" },
   { icon: <ShieldCheck className="size-5" />, title: "SHAP explainability", desc: "Top-6 faktor penjelas aggregated dari one-hot ke fitur original" },
   { icon: <GitBranch className="size-5" />, title: "Full pipeline", desc: "EDA → Cleaning → IV/WoE → Modeling → Threshold → Deploy HF" },
@@ -72,8 +72,8 @@ export default function AboutPage() {
             <p className="text-muted-foreground">Lending Club parquet</p>
             <p className="pl-4">↓ EDA + Cleaning + Feature Engineering</p>
             <p className="pl-4">↓ 7 Model × 2 Imbalance Strategy × Optuna Tuning</p>
-            <p className="pl-4">↓ Best: LightGBM (AUC 0.71, F1 0.41, KS 0.30)</p>
-            <p className="pl-4">↓ Bundle (pipeline + thresholds) → Hugging Face</p>
+            <p className="pl-4">↓ Best: Ensemble Soft Voting (AUC 0.71, F1 0.41, KS 0.30)</p>
+            <p className="pl-4">↓ Bundle (5 pipelines + soft voting + thresholds) → Hugging Face</p>
             <p className="pl-4">↓ FastAPI inference API (SHAP + risk band)</p>
             <p className="pl-4">↓ Next.js frontend (NIM lookup + decision panel)</p>
           </div>

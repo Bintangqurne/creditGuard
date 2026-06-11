@@ -11,6 +11,7 @@ import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { probaToCreditScore, scoreToGrade } from "@/lib/credit-score";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -60,17 +61,6 @@ const LABELS: Record<string, string> = {
 };
 const lab = (k: string) => LABELS[k] || k;
 
-const BAND_COLOR: Record<string, string> = {
-  RENDAH: "#16a34a",
-  SEDANG: "#d97706",
-  TINGGI: "#dc2626",
-};
-const BAND_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  RENDAH: "default",
-  SEDANG: "secondary",
-  TINGGI: "destructive",
-};
-
 function fmt(v: any) {
   if (v === null || v === undefined) return "—";
   if (typeof v === "number") return Number.isInteger(v) ? v : v.toFixed(2);
@@ -85,7 +75,7 @@ export default function DemoPage() {
   const [term, setTerm] = useState(36);
   const [purpose, setPurpose] = useState("debt_consolidation");
   const [appType, setAppType] = useState("Individual");
-  const [mode, setMode] = useState<"recall" | "f1">("recall");
+  const mode = "recall";
   const [pred, setPred] = useState<Prediction | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -131,7 +121,7 @@ export default function DemoPage() {
     } catch { setError("Gagal konek ke API"); }
   }
 
-  async function doPredict() {
+  async function doPredict(scroll = true) {
     if (!nim) { setError("Pilih NIM dulu"); return; }
     setLoading(true);
     setError(null);
@@ -143,13 +133,25 @@ export default function DemoPage() {
       });
       if (!r.ok) { const e = await r.json().catch(() => ({})); setError(e.detail || "Gagal prediksi"); return; }
       setPred(await r.json());
-      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+      if (scroll) setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch { setError("Gagal konek ke API"); }
     finally { setLoading(false); }
   }
 
+
   const ranges = meta?.numeric_ranges;
   const purposeOpts = meta?.categorical?.purpose || [];
+  const creditScore = pred ? probaToCreditScore(pred.proba_default) : 0;
+  const gradeInfo = scoreToGrade(creditScore);
+
+  function factorValue(feature: string): string {
+    if (feature === "loan_amnt") return `$${loanAmnt.toLocaleString()}`;
+    if (feature === "term") return `${term} bulan`;
+    if (feature === "purpose") return purpose.replace(/_/g, " ");
+    if (feature === "application_type") return appType;
+    if (profile?.profile && feature in profile.profile) return String(fmt(profile.profile[feature]));
+    return "";
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -178,11 +180,6 @@ export default function DemoPage() {
             <span className="text-muted-foreground text-sm hidden sm:block">/ Demo Prediksi</span>
           </div>
           <div className="flex items-center gap-2">
-            {meta?.metrics && (
-              <Badge variant="outline" className="text-xs hidden sm:flex">
-                AUC {meta.metrics.auroc?.toFixed(3)} · F1 {meta.metrics.f1?.toFixed(3)}
-              </Badge>
-            )}
             <ThemeToggle />
           </div>
         </div>
@@ -190,8 +187,11 @@ export default function DemoPage() {
 
       <main className="mx-auto px-6 py-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold">Prediksi Risiko Gagal Bayar</h1>
-          <p className="text-muted-foreground text-sm mt-1">Decision-support · human-in-the-loop · powered by LightGBM + SHAP</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="text-2xl font-bold">Prediksi Risiko Gagal Bayar</h1>
+            <Badge variant="outline" className="text-xs">Ensemble Model</Badge>
+          </div>
+          <p className="text-muted-foreground text-sm mt-1">Decision-support · human-in-the-loop · estimasi credit score otomatis</p>
         </div>
 
         {warming && (
@@ -283,29 +283,7 @@ export default function DemoPage() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label>Mode Threshold</Label>
-                <div className="flex gap-2">
-                  <Button
-                    variant={mode === "recall" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setMode("recall")}
-                    className="flex-1 text-xs"
-                  >
-                    Recall ({meta?.thresholds.recall.toFixed(2)})
-                  </Button>
-                  <Button
-                    variant={mode === "f1" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setMode("f1")}
-                    className="flex-1 text-xs"
-                  >
-                    Seimbang ({meta?.thresholds.f1.toFixed(2)})
-                  </Button>
-                </div>
-              </div>
-
-              <Button className="w-full" onClick={doPredict} disabled={loading}>
+              <Button className="w-full" onClick={() => doPredict()} disabled={loading}>
                 {loading ? "Memproses..." : "Prediksi Risiko"}
               </Button>
             </CardContent>
@@ -352,17 +330,21 @@ export default function DemoPage() {
                   <div
                     className="w-44 h-44 rounded-full grid place-items-center"
                     style={{
-                      background: `conic-gradient(${BAND_COLOR[pred.risk_band]} ${pred.proba_default * 360}deg, hsl(var(--muted)) 0deg)`,
+                      background: `conic-gradient(${gradeInfo.color} ${((creditScore - 300) / 550) * 360}deg, hsl(var(--muted)) 0deg)`,
                     }}
                   >
                     <div className="w-32 h-32 rounded-full bg-card flex flex-col items-center justify-center">
-                      <span className="text-3xl font-extrabold">{(pred.proba_default * 100).toFixed(1)}%</span>
-                      <span className="text-muted-foreground text-xs">P(default)</span>
+                      <span className="text-3xl font-extrabold">{creditScore}</span>
+                      <span className="text-muted-foreground text-xs">Credit Score</span>
                     </div>
                   </div>
-                  <Badge variant={BAND_VARIANT[pred.risk_band]} className="text-sm px-4 py-1">
-                    Risiko {pred.risk_band}
+                  <Badge style={{ backgroundColor: gradeInfo.color, color: "white", border: "none" }} className="text-sm px-4 py-1">
+                    Grade {gradeInfo.grade} · {gradeInfo.label}
                   </Badge>
+                  <div className="text-center text-xs text-muted-foreground space-y-0.5">
+                    <p>Probabilitas Default: <strong>{(pred.proba_default * 100).toFixed(1)}%</strong></p>
+                    <p>Risiko {pred.risk_band}</p>
+                  </div>
                 </div>
 
                 {/* Reco + SHAP */}
@@ -373,7 +355,7 @@ export default function DemoPage() {
                       {pred.recommendation}
                     </p>
                     <p className="text-muted-foreground text-xs">
-                      threshold {pred.threshold} ({pred.mode}) · base rate {(pred.default_rate * 100).toFixed(1)}%
+                      threshold {pred.threshold} · base rate {(pred.default_rate * 100).toFixed(1)}%
                     </p>
                   </div>
 
@@ -384,14 +366,17 @@ export default function DemoPage() {
                         const maxAbs = Math.max(...pred.top_factors.map((x) => Math.abs(x.shap)));
                         const w = (Math.abs(f.shap) / maxAbs) * 100;
                         const up = f.shap > 0;
+                        const val = factorValue(f.feature);
                         return (
-                          <div key={f.feature} className="grid grid-cols-[140px_1fr_56px] items-center gap-2 text-xs">
-                            <span className="text-muted-foreground text-right truncate">{lab(f.feature)}</span>
+                          <div key={f.feature} className="grid grid-cols-[170px_1fr_72px] items-center gap-2 text-xs">
+                            <span className="text-muted-foreground text-right truncate">
+                              {lab(f.feature)}{val && <strong className="text-foreground"> ({val})</strong>}
+                            </span>
                             <div className="bg-muted rounded h-4 overflow-hidden">
                               <div className="h-full rounded" style={{ width: `${w}%`, background: up ? "#dc2626" : "#16a34a" }} />
                             </div>
-                            <span style={{ color: up ? "#dc2626" : "#16a34a" }} className="font-medium">
-                              {up ? "↑ naik" : "↓ turun"}
+                            <span style={{ color: up ? "#dc2626" : "#16a34a" }} className="font-medium text-right">
+                              {up ? "↑" : "↓"} {(f.shap * 100).toFixed(1)}%
                             </span>
                           </div>
                         );
@@ -401,6 +386,9 @@ export default function DemoPage() {
                   </div>
                 </div>
               </div>
+              <p className="text-muted-foreground text-xs mt-6 text-center">
+                Skor estimasi berdasarkan model prediksi — bukan skor kredit resmi (FICO/SLIK OJK).
+              </p>
             </CardContent>
           </Card>
         )}

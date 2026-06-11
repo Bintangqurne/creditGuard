@@ -1,56 +1,15 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { Brain, BarChart2, SlidersHorizontal, CornerDownRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Brain, BarChart2, SlidersHorizontal, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-
-function HoverLinkPreview({
-  href,
-  external,
-  previewSrc,
-  children,
-}: {
-  href: string;
-  external?: boolean;
-  previewSrc: string;
-  children: React.ReactNode;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  const inner = (
-    <span
-      className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer relative"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {children}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.92 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 z-50 w-52 rounded-xl overflow-hidden shadow-xl border border-border pointer-events-none"
-          >
-            <img src={previewSrc} alt="preview" className="w-full h-auto object-cover" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </span>
-  );
-
-  if (external) {
-    return <a href={href} target="_blank" rel="noopener noreferrer">{inner}</a>;
-  }
-  return <Link href={href}>{inner}</Link>;
-}
 
 type StackItem = {
   name: string;
   category: string;
   badge: string;
+  url: string;
   icon?: string;
   iconNode?: React.ReactNode;
   className?: string;
@@ -62,30 +21,35 @@ const stack: StackItem[] = [
     category: "core language",
     icon: "https://cdn.simpleicons.org/python",
     badge: "data & ml",
+    url: "https://www.python.org/",
   },
   {
     name: "LightGBM",
     category: "gradient boosting",
     iconNode: <Brain className="h-7 w-7 text-green-500" />,
     badge: "best model",
+    url: "https://lightgbm.readthedocs.io/",
   },
   {
     name: "SHAP",
     category: "explainability",
     iconNode: <BarChart2 className="h-7 w-7 text-violet-500" />,
     badge: "interpretable",
+    url: "https://shap.readthedocs.io/",
   },
   {
     name: "Optuna",
     category: "hyperparameter tuning",
     iconNode: <SlidersHorizontal className="h-7 w-7 text-blue-400" />,
     badge: "tuning",
+    url: "https://optuna.org/",
   },
   {
     name: "FastAPI",
     category: "inference api",
     icon: "https://cdn.simpleicons.org/fastapi",
     badge: "backend",
+    url: "https://fastapi.tiangolo.com/",
   },
   {
     name: "Next.js",
@@ -96,18 +60,21 @@ const stack: StackItem[] = [
       </svg>
     ),
     badge: "frontend",
+    url: "https://nextjs.org/",
   },
   {
     name: "Tailwind CSS",
     category: "css framework",
     icon: "https://cdn.simpleicons.org/tailwindcss",
     badge: "styling",
+    url: "https://tailwindcss.com/",
   },
   {
     name: "Hugging Face",
     category: "model hosting",
     icon: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
     badge: "api deploy",
+    url: "https://huggingface.co/",
   },
   {
     name: "Vercel",
@@ -118,6 +85,7 @@ const stack: StackItem[] = [
       </svg>
     ),
     badge: "fe deploy",
+    url: "https://vercel.com/",
   },
 ];
 
@@ -158,20 +126,20 @@ export function Skills() {
               Teknologi yang digunakan mulai dari eksplorasi data, pelatihan model, deployment API, hingga antarmuka web.
             </p>
 
-            <div className="mt-8 flex w-full justify-between border-t border-border pt-3">
-              <HoverLinkPreview
-                href="https://github.com/Bintangqurne/creditGuard"
-                external
-                previewSrc="https://opengraph.githubassets.com/1/Bintangqurne/creditGuard"
-              >
-                <CornerDownRight className="size-4 text-primary" />
-                Open Github
-              </HoverLinkPreview>
-
-              <HoverLinkPreview href="/demo" previewSrc="/preview-demo.png">
-                <CornerDownRight className="size-4 text-primary" />
-                Coba Demo
-              </HoverLinkPreview>
+            <div className="mt-8 flex w-full gap-3 flex-wrap">
+              <Button asChild size="lg">
+                <Link href="/demo">
+                  Coba Demo <ArrowRight className="ml-1 size-4" />
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="https://github.com/Bintangqurne/creditGuard" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" className="mr-1 size-4" fill="currentColor">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.241 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                  </svg>
+                  Open Github
+                </a>
+              </Button>
             </div>
           </motion.div>
 
@@ -184,32 +152,35 @@ export function Skills() {
             viewport={{ once: false, margin: "-10% 0px" }}
           >
             {stack.map((item, index) => (
-              <motion.li
-                key={index}
-                variants={itemVariants}
-                className="bg-muted flex flex-row items-center justify-between gap-10 rounded-2xl p-2"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="bg-background flex size-16 items-center justify-center rounded-xl p-2 shrink-0">
-                    {item.iconNode ? (
-                      item.iconNode
-                    ) : (
-                      <img
-                        src={item.icon}
-                        alt={item.name}
-                        className={cn("h-7 w-7 object-contain", item.className)}
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                      />
-                    )}
+              <motion.li key={index} variants={itemVariants}>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-muted hover:bg-muted/70 transition-colors flex flex-row items-center justify-between gap-10 rounded-2xl p-2"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="bg-background flex size-16 items-center justify-center rounded-xl p-2 shrink-0">
+                      {item.iconNode ? (
+                        item.iconNode
+                      ) : (
+                        <img
+                          src={item.icon}
+                          alt={item.name}
+                          className={cn("h-7 w-7 object-contain", item.className)}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold tracking-tight">{item.name}</h3>
+                      <p className="text-muted-foreground text-xs uppercase">{item.category}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-base font-semibold tracking-tight">{item.name}</h3>
-                    <p className="text-muted-foreground text-xs uppercase">{item.category}</p>
-                  </div>
-                </div>
-                <span className="bg-foreground/5 mr-3 rounded-full px-3 py-1 text-xs uppercase font-medium text-muted-foreground shrink-0">
-                  {item.badge}
-                </span>
+                  <span className="bg-foreground/5 mr-3 rounded-full px-3 py-1 text-xs uppercase font-medium text-muted-foreground shrink-0">
+                    {item.badge}
+                  </span>
+                </a>
               </motion.li>
             ))}
           </motion.ul>

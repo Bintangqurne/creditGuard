@@ -4,8 +4,8 @@ import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer, Tool
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const statsData = [
-  { title: "7 Model", description: "Logistic Reg, KNN, RF, XGBoost, CatBoost, LightGBM, SVM" },
-  { title: "AUC 0.71", description: "Area Under Curve pada LightGBM terbaik" },
+  { title: "7 Model", description: "Logistic Reg, KNN, RF, XGBoost, CatBoost, LightGBM, Ensemble" },
+  { title: "AUC 0.71", description: "Area Under Curve pada model Ensemble terbaik" },
   { title: "18 Fitur", description: "4 input pengguna + 14 data profil dari database" },
 ];
 
@@ -13,8 +13,8 @@ const chartData = [
   { metric: "AUC", value: 71 },
   { metric: "F1", value: 41 },
   { metric: "KS", value: 30 },
-  { metric: "Recall", value: 64 },
-  { metric: "Precision", value: 50 },
+  { metric: "Recall", value: 61 },
+  { metric: "Precision", value: 31 },
 ];
 
 export function Stats() {

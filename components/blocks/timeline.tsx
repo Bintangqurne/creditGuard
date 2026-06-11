@@ -19,13 +19,13 @@ const data = [
   {
     title: "7 Model + Optuna Tuning",
     description:
-      "Logistic Regression, KNN, Random Forest, XGBoost, CatBoost, LightGBM, SVM — semua diuji dengan Optuna hyperparameter optimization, StratifiedKFold 5-fold CV.",
+      "Logistic Regression, KNN, Random Forest, XGBoost, CatBoost, LightGBM, dan Ensemble (soft voting) — semua diuji dengan Optuna hyperparameter optimization, StratifiedKFold 5-fold CV.",
     date: "Step 3",
   },
   {
     title: "Threshold Tuning & Bundle",
     description:
-      "Dual-threshold tuning out-of-fold: THR_RECALL (F2-optimal untuk cakupan risiko) dan THR_F1 (balanced). Model terbaik LightGBM dibundle ke Hugging Face.",
+      "Dual-threshold tuning: THR_RECALL (F2-optimal untuk cakupan risiko) dan THR_F1 (balanced). Model terbaik — Ensemble Soft Voting — dibundle ke Hugging Face.",
     date: "Step 4",
   },
   {
